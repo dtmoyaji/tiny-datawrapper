@@ -122,7 +122,7 @@ public class Translate extends Table {
 #### 機能4: SpringBoot内で利用可能
 ##### テーブル
 
-新規にテーブルを定義する際に、アノテーション　@ClearfyTable("テーブル名称")をつけることで、Injectionに対応する。
+新規にテーブルを定義する際に、アノテーション　@TinyTable("テーブル名称")をつけることで、Injectionに対応する。
 Injectionでマッピングする変数には、変数に@Autowiredと@Qualifier("テーブル名称")をつける。
 
 ##### JDBC
