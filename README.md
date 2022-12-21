@@ -69,7 +69,7 @@ String colValue3 = table.TableColumne3.of(rs);
 </pre>
 
 外部参照を定義してあれば、外部テーブルを抽出キーに利用可能
-
+一応、リレーション情報を経路探索するように作ったので、直接リンクしないテーブルでも機能する（と思う）
 <pre>
 ResultSet rs = table.select(
     Table.TableColumn1.sameValueOf(valueOf1), //抽出条件を複数指定できる
