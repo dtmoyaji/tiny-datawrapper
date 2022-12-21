@@ -106,8 +106,18 @@ ResultSet rs = table.select(
 
 TableInfoテーブルとColumnInfoテーブルを自動的に生成するので、Table.alterOrCreate()でSQLサーバに作成する際に、
 自動的にテーブル情報と絡む情報を記録する。
-記録する際に、アノテーションで記述した情報をそれぞれ抽出して登録する。
-あとで、テーブル情報の生成が簡単になる。（カラムを廃止した際の記録の取扱いは将来課題）
+
+記録する際に、アノテーションで記述した情報をそれぞれ抽出して登録するので、テーブル情報の管理が簡単になる。（カラムを廃止した際の記録の取扱いは将来課題）
+
+<pre>
+@TinyTable("TRANSLATE") //Springの @Autowired +  @Qualifier("TRANSLATE")でインジェクションするためにつける。
+@LogicalName("翻訳") // TableInfoに格納される論理名称
+@Comment("言語別にテキスト文を格納する.") // TableInfoに格納される備考
+public class Translate extends Table {
+ :
+ :
+}
+</pre>
 
 #### 機能4: SpringBoot内で利用可能
 ##### テーブル
