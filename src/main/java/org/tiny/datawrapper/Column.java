@@ -267,15 +267,13 @@ public class Column<T> extends ArrayList<RelationInfo> {
                 }
                 break;
             case Jdbc.SERVER_TYPE_PGSQL:
+            case Jdbc.SERVER_TYPE_H2DB: //H2dbはv2.0でPGSQLに文法を寄せてったので、まとめた
                 if (!this.name.contains("\"")) {
                     this.name = NameDescriptor.toSqlName(
                             this.getJavaName(),
                             Jdbc.SERVER_TYPE_PGSQL
                     );
                 }
-                break;
-            case Jdbc.SERVER_TYPE_H2DB:
-                this.name = this.getSplitedName();
                 break;
         }
     }
@@ -540,8 +538,7 @@ public class Column<T> extends ArrayList<RelationInfo> {
      * @param column 参照先のカラム
      *
      * @return このカラム(続けて定義を記述するため.)
-     * @throws org.tiny.datawrapper.TinyDatabaseException
-     * 同一テーブル内のリレーションが宣言されたとき
+     * @throws org.tiny.datawrapper.TinyDatabaseException 同一テーブル内のリレーションが宣言されたとき
      */
     public Column addRelationWith(Class<? extends Table> table, Column column) throws TinyDatabaseException {
 
@@ -681,7 +678,7 @@ public class Column<T> extends ArrayList<RelationInfo> {
     }
 
     public boolean hasValue() {
-        if(this.value==null){
+        if (this.value == null) {
             this.existValue = false;
         }
         return this.existValue;

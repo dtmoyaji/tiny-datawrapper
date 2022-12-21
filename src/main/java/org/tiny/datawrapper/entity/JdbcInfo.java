@@ -60,10 +60,10 @@ public class JdbcInfo extends Table {
     public Column<String> JdbcDriverClass;
 
     @LogicalName("ユーザー名")
-    public Column<String> JdbcUser;
+    public Column<String> User;
 
     @LogicalName("パスワード")
-    public Column<String> JdbcPassword;
+    public Column<String> Password;
 
     @Override
     public void defineColumns() {
@@ -79,10 +79,10 @@ public class JdbcInfo extends Table {
                 .setPrimaryKey(true)
                 .setAllowNull(false);
 
-        this.JdbcUser.setLength(Column.SIZE_512)
+        this.User.setLength(Column.SIZE_512)
                 .setAllowNull(false);
 
-        this.JdbcPassword.setLength(Column.SIZE_512);
+        this.Password.setLength(Column.SIZE_512);
 
     }
 }
