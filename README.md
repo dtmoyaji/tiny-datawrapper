@@ -11,23 +11,25 @@ class ExtTable extends Table {
 
   // カラムはJavaのコーディングルールを逸脱してpublicで実装し、カプセル化しない。
   // カラムの初期化はクラスをインスタンス化するときに自動で行うので、宣言だけ行う。
+  // 一般的なjavaの変数の取り扱いルールを逸脱しているが、publicで宣言し、先頭を大文字で宣言すること。
 
   @LogicalName("論理名")　//論理名を宣言すると、カラムを論理名としてデータ取得出来るようになる。
-  public IncrementalKey tableColumn1; // 事前定義済みのColumn (IncrementalKey は自動ナンバリング)
+  public IncrementalKey TableColumn1; // 事前定義済みのColumn (IncrementalKey は自動ナンバリング)
 
-  public Column<Integer> tableColumn2;
+  public Column<Integer> TableColumn2;
 
-  public Column<Stirng> tableColumn3;
+  public Column<Stirng> TableColumn3;
 
   //defineColumnでテーブルの属性（Primary Key, サイズ、Null許可、規定値、リレーション）を定義する。
   @Override
   public defineColumns(){
 
-    this.tableColumn3.setSize(1024)
+    this.TableColumn3.setSize(1024)
       .allowNull(false)
       .defualt("NOT ENTRIED");
 
-    this.tableColumn2.addRelathionWith(OTEHR_TABLECLASS); // 外部参照の定義
+      // TableColumn2はOtherTable.class内の同名カラムであるTableColumn2にリンクする。
+      this.TableColumn2.addRelathionWith(OtherTable.class); 
 
   }
 
@@ -59,8 +61,8 @@ TableExtends table = new TableExtends();
 table.setJdbcSupplier(supplier);
 
 ResultSet rs = table.select(
-    tableColumn1.sameValueOf(valueOf1), //抽出条件を複数指定できる
-    tableColumn2.sameValueOf(valueOf2)
+    table.TableColumn1.sameValueOf(valueOf1), //抽出条件を複数指定できる
+    table.TableColumn2.sameValueOf(valueOf2)
 );
 
 String colValue3 = table.TableColumne3.of(rs);
@@ -70,8 +72,8 @@ String colValue3 = table.TableColumne3.of(rs);
 
 <pre>
 ResultSet rs = table.select(
-    tableColumn1.sameValueOf(valueOf1), //抽出条件を複数指定できる
-    otehrTable.tableColumn2.sameValueOf(valueOf2),
+    Table.TableColumn1.sameValueOf(valueOf1), //抽出条件を複数指定できる
+    otehrTable.TableColumn2.sameValueOf(valueOf2),
 );
 </pre>
 
@@ -81,11 +83,11 @@ ResultSet rs = table.select(
 
 <pre>
 table.clearValues(); //カラムに保存した値をクリア
-table.tableColumn2.setValue(SOMETHING2);
-table.tableColumn3.setValue("FOO VAR");
+table.TableColumn2.setValue(SOMETHING2);
+table.TableColumn3.setValue("FOO VAR");
 
 table.update(
- table.tableColumn1.sameValueOf(SOMETHING1) //ここの引数は、update文のwhere句に該当する。
+ table.TableColumn1.sameValueOf(SOMETHING1) //ここの引数は、update文のwhere句に該当する。
 );
 </pre>
 
