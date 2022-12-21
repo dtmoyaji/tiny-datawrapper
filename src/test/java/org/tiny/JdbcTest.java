@@ -24,7 +24,7 @@ import org.tiny.datawrapper.Jdbc;
 
 /**
  *
- * @author Takahiro MURAKAMI
+ * @author dtmoyaji
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes=MiniServer.class)
