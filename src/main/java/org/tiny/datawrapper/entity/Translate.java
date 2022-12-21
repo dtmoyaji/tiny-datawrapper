@@ -23,7 +23,6 @@
  */
 package org.tiny.datawrapper.entity;
 
-import org.tiny.datawrapper.annotations.ClearfyTable;
 import org.tiny.datawrapper.annotations.Comment;
 import org.tiny.datawrapper.annotations.LogicalName;
 import org.tiny.datawrapper.Column;
@@ -31,13 +30,14 @@ import org.tiny.datawrapper.CurrentTimestamp;
 import org.tiny.datawrapper.ShortFlagZero;
 import org.tiny.datawrapper.StampAtCreation;
 import org.tiny.datawrapper.Table;
+import org.tiny.datawrapper.annotations.TinyTable;
 
 /**
  * 翻訳
  *
  * @author Takahiro MURAKAMI
  */
-@ClearfyTable("TRANSLATE")
+@TinyTable("TRANSLATE")
 @LogicalName("翻訳")
 @Comment("言語別にテキスト文を格納する.")
 public class Translate extends Table {

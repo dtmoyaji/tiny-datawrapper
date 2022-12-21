@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Retention(RetentionPolicy.RUNTIME)
 @Component
 @Configuration
-public @interface ClearfyTable {
+public @interface TinyTable {
     @AliasFor(annotation=Component.class, attribute="value")
     String value() default "";
 }

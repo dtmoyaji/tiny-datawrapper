@@ -23,7 +23,6 @@
  */
 package org.tiny.datawrapper.entity;
 
-import org.tiny.datawrapper.annotations.ClearfyTable;
 import org.tiny.datawrapper.annotations.Comment;
 import org.tiny.datawrapper.annotations.LogicalName;
 import org.tiny.datawrapper.Column;
@@ -31,13 +30,14 @@ import org.tiny.datawrapper.CurrentTimestamp;
 import org.tiny.datawrapper.ShortFlagZero;
 import org.tiny.datawrapper.StampAtCreation;
 import org.tiny.datawrapper.Table;
+import org.tiny.datawrapper.annotations.TinyTable;
 
 /**
  * テーブル定義を格納する
  *
  * @author Takahiro MURAKAMI
  */
-@ClearfyTable("TABLE_INFO")
+@TinyTable("TABLE_INFO")
 @LogicalName("テーブル情報")
 @Comment("データテーブルの情報を格納したテーブル.")
 public class TableInfo extends Table {

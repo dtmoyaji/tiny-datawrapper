@@ -7,7 +7,7 @@ package org.tiny;
  */
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.tiny.datawrapper.ClearfyDatabaseException;
+import org.tiny.datawrapper.TinyDatabaseException;
 import org.tiny.datawrapper.Jdbc;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -88,7 +88,7 @@ public class TableGenerateTest {
         try {
             String selectSentence = this.tableTester.getSelectSentence(this.tableTester.Pkey.asc());
             System.out.println(selectSentence);
-        } catch (ClearfyDatabaseException ex) {
+        } catch (TinyDatabaseException ex) {
             Logger.getLogger(TableGenerateTest.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -97,7 +97,7 @@ public class TableGenerateTest {
                     tableTesterNext.NextKey.sameValueOf("ACHO")
             );
             System.out.println(cmd);
-        } catch (ClearfyDatabaseException ex) {
+        } catch (TinyDatabaseException ex) {
             Logger.getLogger(TableGenerateTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -133,7 +133,7 @@ public class TableGenerateTest {
         try {
             String selectSentence = this.tableTester.getSelectSentence(this.tableTester.Pkey.asc());
             System.out.println(selectSentence);
-        } catch (ClearfyDatabaseException ex) {
+        } catch (TinyDatabaseException ex) {
             Logger.getLogger(TableGenerateTest.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -189,7 +189,7 @@ public class TableGenerateTest {
 
             this.tableTester.drop();
 
-        } catch (ClearfyDatabaseException ex) {
+        } catch (TinyDatabaseException ex) {
             Logger.getLogger(TableGenerateTest.class.getName()).log(Level.SEVERE, null, ex);
         }
          */

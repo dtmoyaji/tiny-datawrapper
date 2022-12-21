@@ -529,7 +529,7 @@ public class Column<T> extends ArrayList<RelationInfo> {
      *
      * @return このカラム(続けて定義を記述するため.)
      */
-    public Column addRelationWith(Class<? extends Table> table) throws ClearfyDatabaseException {
+    public Column addRelationWith(Class<? extends Table> table) throws TinyDatabaseException {
         return this.addRelationWith(table, this);
     }
 
@@ -540,10 +540,10 @@ public class Column<T> extends ArrayList<RelationInfo> {
      * @param column 参照先のカラム
      *
      * @return このカラム(続けて定義を記述するため.)
-     * @throws org.tiny.datawrapper.ClearfyDatabaseException
+     * @throws org.tiny.datawrapper.TinyDatabaseException
      * 同一テーブル内のリレーションが宣言されたとき
      */
-    public Column addRelationWith(Class<? extends Table> table, Column column) throws ClearfyDatabaseException {
+    public Column addRelationWith(Class<? extends Table> table, Column column) throws TinyDatabaseException {
 
         this.relation = false;
 
@@ -562,7 +562,7 @@ public class Column<T> extends ArrayList<RelationInfo> {
             // SpringBeanでArrayListとpublicフィールドが分離してしまうので補正。
             this.bindFieldWithArray();
         } else {
-            throw new ClearfyDatabaseException("同一テーブル内のリレーション宣言が行われています。");
+            throw new TinyDatabaseException("同一テーブル内のリレーション宣言が行われています。");
         }
         return this;
     }
@@ -681,6 +681,9 @@ public class Column<T> extends ArrayList<RelationInfo> {
     }
 
     public boolean hasValue() {
+        if(this.value==null){
+            this.existValue = false;
+        }
         return this.existValue;
     }
 

@@ -64,10 +64,10 @@ public class SelectionDescriptor {
      *
      * @return
      *
-     * @throws ClearfyDatabaseException
+     * @throws TinyDatabaseException
      */
     public String getSelectSentence(Table baseTable, Condition[] conditions)
-            throws ClearfyDatabaseException {
+            throws TinyDatabaseException {
 
         baseTable.postConstruct();
 
@@ -111,7 +111,7 @@ public class SelectionDescriptor {
         }
 
         if (columns.length() < 1) {
-            throw new ClearfyDatabaseException("no columns for selection.");
+            throw new TinyDatabaseException("no columns for selection.");
         }
         columns = columns.substring(1);
 
@@ -138,7 +138,7 @@ public class SelectionDescriptor {
         //テーブルが不足するときの処理。
         if (!res) {
             this.mapOut();
-            throw new ClearfyDatabaseException(
+            throw new TinyDatabaseException(
                     "Unlinkd tables used at select database.");
         }
 

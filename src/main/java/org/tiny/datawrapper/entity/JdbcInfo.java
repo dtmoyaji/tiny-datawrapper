@@ -23,20 +23,20 @@
  */
 package org.tiny.datawrapper.entity;
 
-import org.tiny.datawrapper.annotations.ClearfyTable;
-import org.tiny.datawrapper.annotations.Comment;
-import org.tiny.datawrapper.annotations.LogicalName;
 import org.tiny.datawrapper.Column;
 import org.tiny.datawrapper.CurrentTimestamp;
 import org.tiny.datawrapper.ShortFlagZero;
 import org.tiny.datawrapper.StampAtCreation;
 import org.tiny.datawrapper.Table;
+import org.tiny.datawrapper.annotations.Comment;
+import org.tiny.datawrapper.annotations.LogicalName;
+import org.tiny.datawrapper.annotations.TinyTable;
 
 /**
  *
  * @author Takahiro MURAKAMI
  */
-@ClearfyTable("JDBC_INFO")
+@TinyTable("JDBC_INFO")
 @LogicalName("JDBC情報")
 @Comment("アプリケーションが利用するJDBC情報を格納するテーブル")
 public class JdbcInfo extends Table {
@@ -60,10 +60,10 @@ public class JdbcInfo extends Table {
     public Column<String> JdbcDriverClass;
 
     @LogicalName("ユーザー名")
-    public Column<String> User;
+    public Column<String> JdbcUser;
 
     @LogicalName("パスワード")
-    public Column<String> Password;
+    public Column<String> JdbcPassword;
 
     @Override
     public void defineColumns() {
@@ -79,10 +79,10 @@ public class JdbcInfo extends Table {
                 .setPrimaryKey(true)
                 .setAllowNull(false);
 
-        this.User.setLength(Column.SIZE_512)
+        this.JdbcUser.setLength(Column.SIZE_512)
                 .setAllowNull(false);
 
-        this.Password.setLength(Column.SIZE_512);
+        this.JdbcPassword.setLength(Column.SIZE_512);
 
     }
 }

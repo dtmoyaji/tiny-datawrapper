@@ -28,17 +28,17 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.tiny.datawrapper.annotations.ClearfyTable;
 import org.tiny.datawrapper.annotations.Comment;
 import org.tiny.datawrapper.annotations.LogicalName;
 import org.tiny.datawrapper.Column;
 import org.tiny.datawrapper.Table;
+import org.tiny.datawrapper.annotations.TinyTable;
 
 /**
  *
  * @author Takahiro MURAKAMI <daianji@gmail.com>
  */
-@ClearfyTable("KEY_VALUE_STORAGE")
+@TinyTable("KEY_VALUE_STORAGE")
 @LogicalName("値保存用")
 @Comment("キーと値をセットで保管する")
 public class KeyValueStorage extends Table {

@@ -27,9 +27,9 @@ package org.tiny.datawrapper;
  * 
  * @author Takahiro MURAKAMI
  */
-public class ClearfyDatabaseException extends Exception {
+public class TinyDatabaseException extends Exception {
 
-    public ClearfyDatabaseException(String msg) {
+    public TinyDatabaseException(String msg) {
         super(msg);
     }
 

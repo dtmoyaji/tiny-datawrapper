@@ -23,21 +23,21 @@
  */
 package org.tiny.datawrapper.entity;
 
-import org.tiny.datawrapper.annotations.ClearfyTable;
 import org.tiny.datawrapper.annotations.Comment;
 import org.tiny.datawrapper.annotations.LogicalName;
-import org.tiny.datawrapper.ClearfyDatabaseException;
+import org.tiny.datawrapper.TinyDatabaseException;
 import org.tiny.datawrapper.Column;
 import org.tiny.datawrapper.CurrentTimestamp;
 import org.tiny.datawrapper.ShortFlagZero;
 import org.tiny.datawrapper.StampAtCreation;
 import org.tiny.datawrapper.Table;
+import org.tiny.datawrapper.annotations.TinyTable;
 
 /**
  *
  * @author Takahiro MURAKAMI
  */
-@ClearfyTable("COLUMN_INFO")
+@TinyTable("COLUMN_INFO")
 @LogicalName("カラム情報")
 @Comment("データテーブル内のカラムの情報を格納したテーブル")
 public class ColumnInfo extends Table {
@@ -83,7 +83,7 @@ public class ColumnInfo extends Table {
     public Column<String> Description;
 
     @Override
-    public void defineColumns() throws ClearfyDatabaseException {
+    public void defineColumns() throws TinyDatabaseException {
         this.ColumnClassName
             .setAllowNull(false)
             .setLength(Column.SIZE_1024)

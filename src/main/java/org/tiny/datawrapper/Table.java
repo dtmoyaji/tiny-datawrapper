@@ -36,9 +36,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.tiny.datawrapper.annotations.ClearfyTable;
 import org.tiny.datawrapper.annotations.Comment;
 import org.tiny.datawrapper.annotations.LogicalName;
+import org.tiny.datawrapper.annotations.TinyTable;
 import org.tiny.datawrapper.entity.ColumnInfo;
 import org.tiny.datawrapper.entity.TableInfo;
 import org.tiny.datawrapper.entity.Translate;
@@ -48,7 +48,7 @@ import org.tiny.datawrapper.entity.Translate;
  *
  * @author Takahiro MURAKAMI
  */
-@ClearfyTable
+@TinyTable
 public abstract class Table extends ArrayList<Column> {
 
     public static final int JOIN_TYPE_INNER = 0;
@@ -135,7 +135,7 @@ public abstract class Table extends ArrayList<Column> {
         try {
             this.generateColumns();
             this.defineColumns();
-        } catch (ClearfyDatabaseException ex) {
+        } catch (TinyDatabaseException ex) {
             Logger.getLogger(Table.class.getName())
                     .log(Level.SEVERE, null, ex);
         }
@@ -264,7 +264,7 @@ public abstract class Table extends ArrayList<Column> {
      *
      * @see Table#defineColumns
      */
-    private void generateColumns() throws ClearfyDatabaseException {
+    private void generateColumns() throws TinyDatabaseException {
         ((ArrayList) this).clear();
 
         String mypackage = Table.class.getPackage()
@@ -347,7 +347,7 @@ public abstract class Table extends ArrayList<Column> {
                         ClsType = String.class.getSimpleName();
 
                     } else {
-                        throw new ClearfyDatabaseException(
+                        throw new TinyDatabaseException(
                                 "unsupported type " + ClsType);
                     }
 
@@ -394,9 +394,9 @@ public abstract class Table extends ArrayList<Column> {
      * 記述するだけで、データベース上にテーブルを作成し、レコードを登録し、 また削除ことが可能となる。
      * </p>
      *
-     * @throws org.tiny.datawrapper.ClearfyDatabaseException
+     * @throws org.tiny.datawrapper.TinyDatabaseException
      */
-    public abstract void defineColumns() throws ClearfyDatabaseException;
+    public abstract void defineColumns() throws TinyDatabaseException;
 
     public void drop() {
         String cmd = "drop table if exists %s ";
@@ -623,13 +623,13 @@ public abstract class Table extends ArrayList<Column> {
      *
      * @return select文
      *
-     * @throws ClearfyDatabaseException
+     * @throws TinyDatabaseException
      *
      * @see Condition
      * @see Column
      */
     public String getSelectSentence(Condition... conditions) throws
-            ClearfyDatabaseException {
+            TinyDatabaseException {
 
         SelectionDescriptor desc = new SelectionDescriptor();
         desc.setServerType(this.getServerType());
@@ -668,7 +668,7 @@ public abstract class Table extends ArrayList<Column> {
                 rvalue = rs.getInt("rcount");
                 rs.close();
             }
-        } catch (ClearfyDatabaseException | SQLException ex) {
+        } catch (TinyDatabaseException | SQLException ex) {
             Logger.getLogger(Table.class.getName())
                     .log(Level.SEVERE, null, ex);
         }
@@ -688,7 +688,7 @@ public abstract class Table extends ArrayList<Column> {
 
             rvalue = this.getJdbc().select(cmd);
 
-        } catch (ClearfyDatabaseException ex) {
+        } catch (TinyDatabaseException ex) {
             Logger.getLogger(Table.class.getName())
                     .log(Level.SEVERE, null, ex);
         }
@@ -820,7 +820,7 @@ public abstract class Table extends ArrayList<Column> {
             c.setValue(colm.getValue());
         }
 
-        if (this.getServerType() == Jdbc.SERVER_TYPE_PGSQL) {
+        if (this.getServerType() == Jdbc.SERVER_TYPE_PGSQL || this.getServerType() == Jdbc.SERVER_TYPE_H2DB) {
             boolean rvalue = false;
 
             // キーフィールドを抽出
@@ -834,7 +834,7 @@ public abstract class Table extends ArrayList<Column> {
             }
 
             try {
-                if (pkeys.size() > 0) {
+                if (!pkeys.isEmpty()) {
                     Condition[] pkeyarray = (Condition[]) pkeys.toArray(new Condition[]{});
                     if (this.getCount(pkeyarray) > 0) {
                         this.update(pkeyarray);
@@ -844,7 +844,7 @@ public abstract class Table extends ArrayList<Column> {
                 } else {
                     this.insert((Column[]) this.toArray());
                 }
-            } catch (ClearfyDatabaseException ex) {
+            } catch (TinyDatabaseException ex) {
                 Logger.getLogger(Table.class.getName()).log(Level.SEVERE, null, ex);
             }
 
@@ -1330,9 +1330,9 @@ public abstract class Table extends ArrayList<Column> {
      * @param conditions 更新条件
      *
      * @return 成功するとtrue;
+     * @throws org.tiny.datawrapper.TinyDatabaseException
      */
-    public boolean update(Condition... conditions) throws
-            ClearfyDatabaseException {
+    public boolean update(Condition... conditions) throws TinyDatabaseException {
 
         this.postConstruct();
 
@@ -1365,7 +1365,7 @@ public abstract class Table extends ArrayList<Column> {
             fields = fields.substring(1)
                     .trim();
         } else {
-            throw new ClearfyDatabaseException(
+            throw new TinyDatabaseException(
                     "All Columns are not selectable on update.");
         }
 
@@ -1415,7 +1415,7 @@ public abstract class Table extends ArrayList<Column> {
      *
      * @return レコード数
      */
-    public int getCount(Condition... conditions) throws ClearfyDatabaseException {
+    public int getCount(Condition... conditions) throws TinyDatabaseException {
         String cmdsrc = this.getSelectSentence(conditions);
         String cmd = "select count(*) reccount from (%s) countsql";
         cmd = String.format(cmd, cmdsrc);
@@ -1595,7 +1595,7 @@ public abstract class Table extends ArrayList<Column> {
     public void setAliasFromLogicalName(String Country) {
 
         if (this.getJdbc() == null) {
-            ClearfyDatabaseException ex = new ClearfyDatabaseException("JDbcSupplier is null.");
+            TinyDatabaseException ex = new TinyDatabaseException("JDbcSupplier is null.");
             Logger.getLogger(Table.class.getName())
                     .log(Level.SEVERE, null, ex);
         }

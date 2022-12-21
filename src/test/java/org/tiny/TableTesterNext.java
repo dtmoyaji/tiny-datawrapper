@@ -6,19 +6,19 @@
 package org.tiny;
 
 import java.sql.Date;
-import org.tiny.datawrapper.ClearfyDatabaseException;
+import org.tiny.datawrapper.TinyDatabaseException;
 import org.tiny.datawrapper.Column;
 import org.tiny.datawrapper.CurrentTimestamp;
 import org.tiny.datawrapper.IncrementalKey;
 import org.tiny.datawrapper.StampAtCreation;
 import org.tiny.datawrapper.Table;
-import org.tiny.datawrapper.annotations.ClearfyTable;
+import org.tiny.datawrapper.annotations.TinyTable;
 
 /**
  *
  * @author Takahiro MURAKAMI
  */
-@ClearfyTable("TABLE_TESTER_NEXT")
+@TinyTable("TABLE_TESTER_NEXT")
 public class TableTesterNext extends Table {
 
     public IncrementalKey NextKey;
@@ -32,7 +32,7 @@ public class TableTesterNext extends Table {
     public Column<Date> DateField;
 
     @Override
-    public void defineColumns() throws ClearfyDatabaseException {
+    public void defineColumns() throws TinyDatabaseException {
         this.Pkey.addRelationWith(TableTester.class, Pkey);
     }
 

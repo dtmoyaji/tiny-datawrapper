@@ -101,7 +101,6 @@ public class Jdbc implements Serializable, IJdbcSupplier, IDbSwitch {
     @PostConstruct
     public void startServer() {
         if (this.getUrl().contains("jdbc:h2")) {
-
             try {
                 // wakeup server
                 this.tcpServer = Server.createTcpServer("-ifNotExists",
@@ -211,6 +210,9 @@ public class Jdbc implements Serializable, IJdbcSupplier, IDbSwitch {
             try {
                 File f = new File(this.url);
                 String path = f.getCanonicalPath();
+                if (path.contains(":")) {
+                    path = path.substring(path.indexOf(":") + 2);
+                }
                 rvalue = String.format(Jdbc.URL_BASE, this.getPort(), path);
             } catch (IOException ex) {
                 Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
@@ -362,7 +364,7 @@ public class Jdbc implements Serializable, IJdbcSupplier, IDbSwitch {
                     rvalue = true;
                 }
             }
-        } catch (SQLException | ClearfyDatabaseException ex) {
+        } catch (SQLException | TinyDatabaseException ex) {
             Logger.getLogger(Jdbc.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
