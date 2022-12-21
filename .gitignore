@@ -1,0 +1,20 @@
+target/
+src/test/resources/application.properties
+*.mv.db
+ 
+# for Visual Studio Code
+.vscode/*
+ 
+# for IntelliJ IDEA
+.idea/*
+*.iml
+ 
+# for Eclipse IDE
+.settings/*
+.classpath
+.project
+ 
+# for NetBeans
+nbactions.xml
+nb-configuration.xml
+/nbproject/
