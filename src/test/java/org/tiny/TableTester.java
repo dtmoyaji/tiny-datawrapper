@@ -19,7 +19,7 @@ import org.tiny.datawrapper.annotations.TinyTable;
 
 /**
  *
- * @author Takahiro MURAKAMI
+ * @author dtmoyaji
  */
 @TinyTable("TABLE_TESTER")
 public class TableTester extends Table{
