@@ -85,7 +85,7 @@ table.tableColumn2.setValue(SOMETHING2);
 table.tableColumn3.setValue("FOO VAR");
 
 table.update(
- table.tableColumn1.sameValueOf(SOMETHING1)
+ table.tableColumn1.sameValueOf(SOMETHING1) //ここの引数は、update文のwhere句に該当する。
 );
 </pre>
 
