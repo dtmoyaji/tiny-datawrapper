@@ -104,13 +104,14 @@ public class Jdbc implements Serializable, IJdbcSupplier, IDbSwitch {
             try {
                 // wakeup server
                 this.tcpServer = Server.createTcpServer("-ifNotExists",
-                        "-tcpAllowOthers", 
+                        //"-tcpAllowOthers", 
+                        "-tcp", 
                         "-tcpPort", String.valueOf(this.getPort()));
                 Logger.getLogger(Jdbc.class.getName()).info("H2db tcpServer Created.");
                 if (!this.tcpServer.isRunning(false)) {
                     this.tcpServer.start();
                     Logger.getLogger(Jdbc.class.getName()).info("H2db tcpServer Started.");
-                    Logger.getLogger(Jdbc.class.getName()).info("JDBC url: " + this.getUrl());
+                    Logger.getLogger(Jdbc.class.getName()).log(Level.INFO, "JDBC url: {0}", this.getUrl());
                 }
                 this.serverType = Jdbc.SERVER_TYPE_H2DB;
             } catch (SQLException ex) {
