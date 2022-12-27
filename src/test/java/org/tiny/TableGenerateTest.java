@@ -7,8 +7,6 @@ package org.tiny;
  */
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.tiny.datawrapper.TinyDatabaseException;
-import org.tiny.datawrapper.Jdbc;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
@@ -20,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.tiny.datawrapper.Jdbc;
+import org.tiny.datawrapper.TinyDatabaseException;
 
 /**
  *
@@ -38,6 +38,7 @@ public class TableGenerateTest {
     TableTesterNext tableTesterNext;
 
     @Autowired
+    @Qualifier("Jdbc")
     private Jdbc jdbc;
 
     public TableGenerateTest() {

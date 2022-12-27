@@ -24,11 +24,6 @@
 package org.tiny;
 
 import javax.annotation.PostConstruct;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.tiny.datawrapper.Jdbc;
-import org.tiny.datawrapper.entity.ColumnInfo;
-import org.tiny.datawrapper.entity.JdbcInfo;
-import org.tiny.datawrapper.entity.TableInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
@@ -36,6 +31,10 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.tiny.datawrapper.Jdbc;
+import org.tiny.datawrapper.entity.ColumnInfo;
+import org.tiny.datawrapper.entity.JdbcInfo;
+import org.tiny.datawrapper.entity.TableInfo;
 
 /**
  * 単体で起動するミニサーバー
@@ -48,7 +47,8 @@ import org.springframework.context.annotation.Configuration;
 @EnableAutoConfiguration
 public class MiniServer {
 
-    @SpringBean
+    @Autowired
+    @Qualifier("Jdbc")
     private Jdbc jdbc;
     
     @Autowired

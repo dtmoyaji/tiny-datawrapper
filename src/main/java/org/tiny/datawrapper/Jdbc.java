@@ -104,7 +104,8 @@ public class Jdbc implements Serializable, IJdbcSupplier, IDbSwitch {
             try {
                 // wakeup server
                 this.tcpServer = Server.createTcpServer("-ifNotExists",
-                        "-tcpAllowOthers", "-tcpPort", String.valueOf(this.getPort()));
+                        "-tcpAllowOthers", 
+                        "-tcpPort", String.valueOf(this.getPort()));
                 Logger.getLogger(Jdbc.class.getName()).info("H2db tcpServer Created.");
                 if (!this.tcpServer.isRunning(false)) {
                     this.tcpServer.start();
