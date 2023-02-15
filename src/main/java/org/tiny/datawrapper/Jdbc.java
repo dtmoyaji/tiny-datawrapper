@@ -35,8 +35,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
-import org.h2.tools.Server;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.tiny.datawrapper.entity.TableInfo;
@@ -96,36 +94,6 @@ public class Jdbc implements Serializable, IJdbcSupplier, IDbSwitch {
 
     private final ArrayList<String> columnEntryCache;
 
-    private Server tcpServer;
-
-    @PostConstruct
-    public void startServer() {
-        if (this.getUrl().contains("jdbc:h2")) {
-            try {
-                // wakeup server
-                this.tcpServer = Server.createTcpServer("-ifNotExists",
-                        //"-tcpAllowOthers", 
-                        "-tcp", 
-                        "-tcpPort", String.valueOf(this.getPort()));
-                Logger.getLogger(Jdbc.class.getName()).info("H2db tcpServer Created.");
-                if (!this.tcpServer.isRunning(false)) {
-                    this.tcpServer.start();
-                    Logger.getLogger(Jdbc.class.getName()).info("H2db tcpServer Started.");
-                    Logger.getLogger(Jdbc.class.getName()).log(Level.INFO, "JDBC url: {0}", this.getUrl());
-                }
-                this.serverType = Jdbc.SERVER_TYPE_H2DB;
-            } catch (SQLException ex) {
-                Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else if (this.getUrl().contains("jdbc:mysql")) {
-            this.serverType = Jdbc.SERVER_TYPE_MYSQL;
-        } else if (this.getUrl().contains("jdbc:postgresql")) {
-            this.serverType = Jdbc.SERVER_TYPE_PGSQL;
-        } else {
-            this.serverType = Jdbc.SERVER_TYPE_UNKNOWN;
-        }
-    }
-
     /**
      * コンストラクタ.
      *
@@ -137,14 +105,6 @@ public class Jdbc implements Serializable, IJdbcSupplier, IDbSwitch {
 
     @Override
     public void off() {
-        if (this.getUrl().contains("jdbc:h2")) {
-            this.tcpServer.stop();
-            Logger.getLogger(Jdbc.class.getName()).info("H2db tcpServer Stopped.");
-        }
-    }
-
-    public Server getTcpServer() {
-        return this.tcpServer;
     }
 
     @Override
@@ -173,6 +133,7 @@ public class Jdbc implements Serializable, IJdbcSupplier, IDbSwitch {
     }
 
     public int getServerType() {
+        this.setUrl(this.url);
         return this.serverType;
     }
 

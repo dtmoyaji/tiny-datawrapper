@@ -168,7 +168,8 @@ public abstract class Table extends ArrayList<Column> {
     public int getServerType() {
         if (this.getJdbc() != null) {
             return this.getJdbc().getServerType();
-        } else {
+        }        
+        else {
             return Jdbc.SERVER_TYPE_UNKNOWN;
         }
     }

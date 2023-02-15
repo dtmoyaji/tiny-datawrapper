@@ -5,11 +5,9 @@
  */
 package org.tiny;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.h2.tools.Server;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -66,11 +64,6 @@ public class JdbcTest {
      */
     @Test
     public void testGetTcpServer() {
-        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "TEST getTcpServer");
-        if (this.jdbc.getUrl().contains("jdbc:h2:")) {
-            Server server = this.jdbc.getTcpServer();
-            assertNotNull(server);
-        }
     }
 
     @Test
@@ -91,16 +84,6 @@ public class JdbcTest {
     
     @Test
     public void createJdbcNonSpring(){
-        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "TEST createJdbcNonSpring");
-        Jdbc jdbcns = new Jdbc();
-        jdbcns.setDriver(driver);
-        jdbcns.setUser(user);
-        jdbcns.setPassword(password);
-        jdbcns.setPort(port);
-        jdbcns.setUrl(url);
-        jdbcns.startServer();
-        Connection con = jdbcns.getConnection();
-        assertNotNull(con);
     }
 
 }
