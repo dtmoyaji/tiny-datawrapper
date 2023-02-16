@@ -37,6 +37,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.tiny.datawrapper.entity.ColumnInfo;
 import org.tiny.datawrapper.entity.TableInfo;
 
 /**
@@ -240,9 +241,20 @@ public class Jdbc implements Serializable, IJdbcSupplier, IDbSwitch {
      * @return
      */
     public Connection getConnection() {
-
-        return getConnection(this.getUrl(), this.getUser(), this.getPassword());
-
+        Connection rvalue = getConnection(this.getUrl(), this.getUser(), this.getPassword());
+        return rvalue;
+    }
+    
+    /**
+     * テーブル情報、カラム情報を格納するテーブルを生成する。
+     */
+    public void createInfoTables(){
+        if(this.getConnection()!=null){
+            TableInfo tableInfo = new TableInfo();
+            tableInfo.alterOrCreateTable(this);
+            ColumnInfo columnInfo = new ColumnInfo();
+            columnInfo.alterOrCreateTable(this);
+        }
     }
 
     /**

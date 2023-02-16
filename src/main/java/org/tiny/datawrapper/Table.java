@@ -168,8 +168,7 @@ public abstract class Table extends ArrayList<Column> {
     public int getServerType() {
         if (this.getJdbc() != null) {
             return this.getJdbc().getServerType();
-        }        
-        else {
+        } else {
             return Jdbc.SERVER_TYPE_UNKNOWN;
         }
     }
@@ -1009,6 +1008,7 @@ public abstract class Table extends ArrayList<Column> {
         } else {
             try {
                 //サーバーにあるが、クラスに無い
+                String tblName = this.getName().replaceAll("\"", ""); // pgsql対応
                 ResultSet columns = jdbc
                         .getConnection()
                         .getMetaData()
@@ -1356,7 +1356,11 @@ public abstract class Table extends ArrayList<Column> {
                     char[] fieldvalue = (char[]) column.getValue();
                     field = String.format(field, fieldName, String.valueOf(fieldvalue));
                 } else {
-                    field = String.format(field, column.getFullName(), column.getValue());
+                    if (fieldName.equals(column.getTable().getName()) && this.getServerType() == Jdbc.SERVER_TYPE_PGSQL) {
+                        field = String.format(field, column.getName(), column.getValue());
+                    } else {
+                        field = String.format(field, column.getFullName(), column.getValue());
+                    }
                 }
 
                 fields += ", " + field;
