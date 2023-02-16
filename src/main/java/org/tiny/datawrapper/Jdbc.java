@@ -76,14 +76,14 @@ public class Jdbc implements Serializable, IJdbcSupplier, IDbSwitch {
     @Value("${tiny.db.driver:org.h2.Driver}")
     private String driver;
 
-    @Value("${tiny.db.url:./clearfy}")
+    @Value("${tiny.db.url:tiny}")
     private String url;
 
     @Value("${tiny.db.user:sa}")
     private String user;
 
-    @Value("${tiny.db.password}")
-    private String password = "";
+    @Value("${tiny.db.password:password}")
+    private String password;
 
     private int serverType = Jdbc.SERVER_TYPE_H2DB;
 

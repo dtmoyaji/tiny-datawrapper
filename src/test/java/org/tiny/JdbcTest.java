@@ -40,7 +40,7 @@ public class JdbcTest {
     @Value("${tiny.db.user:sa}")
     String user;
     
-    @Value("${tiny.db.password:}")
+    @Value("${tiny.db.password:password}")
     String password;
     
     @Value("${tiny.db.port:9900}")
@@ -78,7 +78,7 @@ public class JdbcTest {
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "TEST getJdbc");
         Jdbc localJdbc = this.jdbc.getJdbc();
         assertNotNull(localJdbc);
-        String url = localJdbc.getMetaData().getURL();
+        String url = localJdbc.getUrl();
         assertEquals(this.jdbc.getUrl(), url);
     }
     
