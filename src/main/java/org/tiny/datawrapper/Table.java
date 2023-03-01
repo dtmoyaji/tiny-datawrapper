@@ -1012,7 +1012,7 @@ public abstract class Table extends ArrayList<Column> {
                 ResultSet columns = jdbc
                         .getConnection()
                         .getMetaData()
-                        .getColumns(null, null, this.getName().toUpperCase(), "%");
+                        .getColumns(null, null, tblName, "%");
                 while (columns.next()) {
                     String colName = columns.getString("COLUMN_NAME");
                     if (this.isMyColumn(colName.toUpperCase())) {
