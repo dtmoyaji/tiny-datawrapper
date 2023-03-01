@@ -1065,13 +1065,13 @@ public abstract class Table extends ArrayList<Column> {
      */
     public void recordInfo(Jdbc supplier) {
 
-        //テーブル情報テーブルの初期化
+        //テーブル情報テーブルの初期化.getConectionで作られるので、alterしない。
         TableInfo tableInfo = new TableInfo();
-        tableInfo.alterOrCreateTable(supplier);
+        tableInfo.setJdbc(supplier);
 
         //カラム情報テーブルの初期化
         ColumnInfo columnInfo = new ColumnInfo();
-        columnInfo.alterOrCreateTable(supplier);
+        columnInfo.setJdbc(supplier);
 
         //テーブル情報の記録.
         String tablePhisicalName = this.getName();

@@ -246,18 +246,6 @@ public class Jdbc implements Serializable, IJdbcSupplier, IDbSwitch {
     }
     
     /**
-     * テーブル情報、カラム情報を格納するテーブルを生成する。
-     */
-    public void createInfoTables(){
-        if(this.getConnection()!=null){
-            TableInfo tableInfo = new TableInfo();
-            tableInfo.alterOrCreateTable(this);
-            ColumnInfo columnInfo = new ColumnInfo();
-            columnInfo.alterOrCreateTable(this);
-        }
-    }
-
-    /**
      * コネクションを取得する. ついでにテーブルとカラムの名称をJdbc内のキャッシュにロードする
      *
      * @param jdbcUrl JDBC URL
@@ -268,6 +256,7 @@ public class Jdbc implements Serializable, IJdbcSupplier, IDbSwitch {
      */
     public Connection getConnection(String jdbcUrl, String user, String password) {
         try {
+            boolean tableinfoExist = false;
             if (this.connection == null) {
                 this.connection = DriverManager.getConnection(jdbcUrl, user, password);
 
@@ -277,6 +266,8 @@ public class Jdbc implements Serializable, IJdbcSupplier, IDbSwitch {
 
                 while (existance.next()) {
                     String tablename = existance.getString("TABLE_NAME");
+                    System.out.println(tablename);
+                    
                     tablename = NameDescriptor.toJavaName(tablename);
                     tablename = NameDescriptor.toSqlName(tablename, this.getServerType());
                     this.tableEntryCache.add(tablename);
@@ -295,7 +286,18 @@ public class Jdbc implements Serializable, IJdbcSupplier, IDbSwitch {
                     this.registColumnEntryCache(tablename, columnName);
                 }
                 existance.close();
-
+                
+                // キャッシュにTableInfoが格納されていなければ、DBにも存在しないので、COLUMN_INFOとセットで作成する。
+                TableInfo tableInfo = new TableInfo();
+                tableInfo.setJdbc(this);
+                String tblName = tableInfo.getName();
+                if(!this.tableEntryCache.contains(tblName)){
+                    this.connection.createStatement().execute(tableInfo.getCreateSentence());
+                    this.tableEntryCache.add(tblName);
+                    ColumnInfo columnInfo = new ColumnInfo();
+                    columnInfo.alterOrCreateTable(this);
+                }
+                
             }
         } catch (SQLException ex) {
             Logger.getLogger(Jdbc.class
