@@ -89,8 +89,7 @@ public class Jdbc implements Serializable, IJdbcSupplier, IDbSwitch {
 
     private int loggingMode = LOGGING_MODE_SILENT;
 
-    private Connection connection;
-
+    //private Connection connection;
     private final ArrayList<String> tableEntryCache;
 
     private final ArrayList<String> columnEntryCache;
@@ -241,10 +240,11 @@ public class Jdbc implements Serializable, IJdbcSupplier, IDbSwitch {
      * @return
      */
     public Connection getConnection() {
+        this.setDriver(this.getDriver());
         Connection rvalue = getConnection(this.getUrl(), this.getUser(), this.getPassword());
         return rvalue;
     }
-    
+
     /**
      * コネクションを取得する. ついでにテーブルとカラムの名称をJdbc内のキャッシュにロードする
      *
@@ -255,54 +255,53 @@ public class Jdbc implements Serializable, IJdbcSupplier, IDbSwitch {
      * @return コネクション
      */
     public Connection getConnection(String jdbcUrl, String user, String password) {
+        Connection rvalue = null;
         try {
             boolean tableinfoExist = false;
-            if (this.connection == null) {
-                this.connection = DriverManager.getConnection(jdbcUrl, user, password);
+            rvalue = DriverManager.getConnection(jdbcUrl, user, password);
 
-                ResultSet existance = this.connection
-                        .getMetaData()
-                        .getTables(this.connection.getCatalog(), null, "%", new String[]{"TABLE"});
+            ResultSet existance = rvalue
+                    .getMetaData()
+                    .getTables(rvalue.getCatalog(), null, "%", new String[]{"TABLE"});
 
-                while (existance.next()) {
-                    String tablename = existance.getString("TABLE_NAME");
-                    
-                    tablename = NameDescriptor.toJavaName(tablename);
-                    tablename = NameDescriptor.toSqlName(tablename, this.getServerType());
-                    this.tableEntryCache.add(tablename);
-                }
-                existance.close();
+            while (existance.next()) {
+                String tablename = existance.getString("TABLE_NAME");
 
-                existance = this.connection.getMetaData().getColumns(null, null, null, "%");
-                while (existance.next()) {
-                    String tablename = existance.getString("TABLE_NAME");
-                    tablename = NameDescriptor.toJavaName(tablename);
-                    tablename = NameDescriptor.toSqlName(tablename, this.getServerType());
-
-                    String columnName = existance.getString("COLUMN_NAME");
-                    columnName = NameDescriptor.toJavaName(columnName);
-                    columnName = NameDescriptor.toSqlName(columnName, this.getServerType());
-                    this.registColumnEntryCache(tablename, columnName);
-                }
-                existance.close();
-                
-                // キャッシュにTableInfoが格納されていなければ、DBにも存在しないので、COLUMN_INFOとセットで作成する。
-                TableInfo tableInfo = new TableInfo();
-                tableInfo.setJdbc(this);
-                String tblName = tableInfo.getName();
-                if(!this.tableEntryCache.contains(tblName)){
-                    this.connection.createStatement().execute(tableInfo.getCreateSentence());
-                    this.tableEntryCache.add(tblName);
-                    ColumnInfo columnInfo = new ColumnInfo();
-                    columnInfo.alterOrCreateTable(this);
-                }
-                
+                tablename = NameDescriptor.toJavaName(tablename);
+                tablename = NameDescriptor.toSqlName(tablename, this.getServerType());
+                this.tableEntryCache.add(tablename);
             }
+            existance.close();
+
+            existance = rvalue.getMetaData().getColumns(null, null, null, "%");
+            while (existance.next()) {
+                String tablename = existance.getString("TABLE_NAME");
+                tablename = NameDescriptor.toJavaName(tablename);
+                tablename = NameDescriptor.toSqlName(tablename, this.getServerType());
+
+                String columnName = existance.getString("COLUMN_NAME");
+                columnName = NameDescriptor.toJavaName(columnName);
+                columnName = NameDescriptor.toSqlName(columnName, this.getServerType());
+                this.registColumnEntryCache(tablename, columnName);
+            }
+            existance.close();
+
+            // キャッシュにTableInfoが格納されていなければ、DBにも存在しないので、COLUMN_INFOとセットで作成する。
+            TableInfo tableInfo = new TableInfo();
+            tableInfo.setJdbc(this);
+            String tblName = tableInfo.getName();
+            if (!this.tableEntryCache.contains(tblName)) {
+                rvalue.createStatement().execute(tableInfo.getCreateSentence());
+                this.tableEntryCache.add(tblName);
+                ColumnInfo columnInfo = new ColumnInfo();
+                columnInfo.alterOrCreateTable(this);
+            }
+
         } catch (SQLException ex) {
             Logger.getLogger(Jdbc.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
-        return this.connection;
+        return rvalue;
     }
 
     /**
@@ -375,19 +374,6 @@ public class Jdbc implements Serializable, IJdbcSupplier, IDbSwitch {
         }
         return rvalue;
 
-    }
-
-    public void close() {
-        if (this.connection != null) {
-            try {
-                if (!this.connection.isClosed()) {
-                    this.connection.close();
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(Jdbc.class
-                        .getName()).log(Level.SEVERE, null, ex);
-            }
-        }
     }
 
     public void registTableEntryCache(String tableName) {

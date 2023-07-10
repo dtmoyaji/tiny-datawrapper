@@ -71,15 +71,17 @@ public class SelectionDescriptor {
 
         baseTable.postConstruct();
 
-        String rvalue = "select distinct %s from %s %s %s";
+        String rvalue = "select distinct %s from %s %s %s %s";
         String columns = "";
         String fromAndJoins = " |" + baseTable.getNameWithAlias() + "| ";
         String wheres = "";
         String orders = "";
+        String regions = "";
 
         //選択対象のカラムを列挙し、columnsに格納する。別名があれば別名を用いる.
         for (Condition condition : conditions) {
-            if (!(condition instanceof ConditionForOrder)) {
+            if (!(condition instanceof ConditionForOrder)
+                    && !(condition instanceof ConditionForRegion)) {
                 if (condition.getColumn()
                         .getSelectable()) {
                     Column column = condition.getColumn();
@@ -122,12 +124,14 @@ public class SelectionDescriptor {
         String stackName = baseTable.getAlias();
         String tableNameStack = "<" + stackName + ">";
         for (Condition condition : conditions) {
-            Table t = condition.getColumn()
-                    .getTable();
-            stackName = t.getAlias();
-            if (!tableNameStack.contains("<" + stackName + ">")) {
-                tables.add(t);
-                tableNameStack += "<" + stackName + ">";
+            if (! (condition instanceof ConditionForRegion)) {
+                Table t = condition.getColumn()
+                        .getTable();
+                stackName = t.getAlias();
+                if (!tableNameStack.contains("<" + stackName + ">")) {
+                    tables.add(t);
+                    tableNameStack += "<" + stackName + ">";
+                }
             }
         }
 
@@ -192,6 +196,19 @@ public class SelectionDescriptor {
                         .length() > 0) {
                     orders += ", " + o + "\n";
                 }
+            } else if (condition instanceof ConditionForRegion) {
+                ConditionForRegion cond = (ConditionForRegion) condition;
+                int operator = cond.getOperation();
+                int value = (int) cond.value;
+
+                switch (operator) {
+                    case ConditionForRegion.LIMIT:
+                        regions += " LIMIT " + value + " ";
+                        break;
+                    case ConditionForRegion.OFFSET:
+                        regions += " OFFSET " + value + " ";
+                        break;
+                }
             } else {
                 String w = condition.getWhere();
                 if (w.trim()
@@ -228,7 +245,7 @@ public class SelectionDescriptor {
                     .substring(",".length());
         }
 
-        rvalue = String.format(rvalue, columns, fromAndJoins, wheres, orders);
+        rvalue = String.format(rvalue, columns, fromAndJoins, wheres, orders, regions);
         //System.out.println(rvalue);
         return rvalue;
     }

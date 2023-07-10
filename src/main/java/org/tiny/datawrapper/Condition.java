@@ -42,17 +42,22 @@ public class Condition<T> {
 
     protected Column<T> column;
     protected int operation;
-    protected Object Value;
+    protected Object value;
 
     public Condition(Column<T> col, int operation, T value) {
         this.column = col;
         this.operation = operation;
-        this.Value = value;
+        this.value = value;
     }
 
     public Condition(Column<T> col, int operation) {
         this.column = col;
         this.operation = operation;
+    }
+    
+    public Condition(int operation, Object value){
+        this.operation = operation;
+        this.value = value;
     }
 
     /**
@@ -84,11 +89,11 @@ public class Condition<T> {
                 break;
             case IS_NULL:
                 operator = "is";
-                this.Value = "null";
+                this.value = "null";
                 break;
             case IS_NOT_NULL:
                 operator = "is not";
-                this.Value = "null";
+                this.value = "null";
                 break;
             case LIKE:
                 operator = "like";
@@ -101,8 +106,8 @@ public class Condition<T> {
         }
 
         String value = "";
-        if (this.Value instanceof String) {
-            value = (String) this.Value;
+        if (this.value instanceof String) {
+            value = (String) this.value;
             if (this.column.getType().equals(String.class.getSimpleName())
                 || this.column.getType().equals(char[].class.getTypeName())) {
                 if (value.contains("'")) {
@@ -112,8 +117,8 @@ public class Condition<T> {
                     value = String.format("'%s'", value);
                 }
             }
-        } else if (this.Value instanceof Timestamp) {
-            value = ((Timestamp) this.Value).toLocalDateTime()
+        } else if (this.value instanceof Timestamp) {
+            value = ((Timestamp) this.value).toLocalDateTime()
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             if (value.contains("'")) {
                 value = value.replaceAll("'", "''");
@@ -122,13 +127,13 @@ public class Condition<T> {
             if (!value.contains("'")) {
                 value = String.format("'%s'", value);
             }
-        }else if (this.Value instanceof Date ||
-                this.Value instanceof Time){
-            value = "'" + this.Value.toString() + "'";
-        } else if (this.Value instanceof Column) {
-            value = ((Column) this.Value).getFullName();
+        }else if (this.value instanceof Date ||
+                this.value instanceof Time){
+            value = "'" + this.value.toString() + "'";
+        } else if (this.value instanceof Column) {
+            value = ((Column) this.value).getFullName();
         } else {
-            value = String.valueOf(this.Value);
+            value = String.valueOf(this.value);
         }
 
         rvalue = String.format(
@@ -152,6 +157,10 @@ public class Condition<T> {
     public Condition<T> setColumnAlias(String labelText) {
         this.column.setAlias(labelText);
         return this;
+    }
+    
+    public int getOperation(){
+        return this.operation;
     }
 
 }
