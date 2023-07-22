@@ -61,44 +61,45 @@ public class Column<T> extends ArrayList<RelationInfo> {
     public static final int SIZE_4096 = 4096;
 
     /**
+     * 見せない
+     */
+    public static final int VISIBLE_TYPE_HIDDEN = 1;
+
+    /**
      * ラベル
      */
-    public static final int VISIBLE_TYPE_LABEL = 0;
+    public static final int VISIBLE_TYPE_LABEL = 2;
 
     /**
      * テキストフィールド
      */
-    public static final int VISIBLE_TYPE_TEXT = 1;
+    public static final int VISIBLE_TYPE_TEXT = 4;
 
     /**
      * チェックボックス
      */
-    public static final int VISIBLE_TYPE_CHECKBOX = 2;
+    public static final int VISIBLE_TYPE_CHECKBOX = 8;
 
     /**
      * パスワード
      */
-    public static final int VISIBLE_TYPE_PASSWORD = 3;
+    public static final int VISIBLE_TYPE_PASSWORD = 16;
 
     /**
      * パスワードnull可
      */
-    public static final int VISIBLE_TYPE_PASSWORD_NOREQ = 4;
+    public static final int VISIBLE_TYPE_PASSWORD_NOREQ = 32;
 
     /**
      * 長いテキスト
      */
-    public static final int VISIBLE_TYPE_TEXTAREA = 5;
+    public static final int VISIBLE_TYPE_TEXTAREA = 64;
 
     /**
      * 長いリッチテキスト
      */
-    public static final int VISIBLE_TYPE_RICHTEXTAREA = 6;
+    public static final int VISIBLE_TYPE_RICHTEXTAREA = 128;
 
-    /**
-     * 見せない
-     */
-    public static final int VISIBLE_TYPE_HIDDEN = 99;
 
     /**
      * カラム名
@@ -814,6 +815,10 @@ public class Column<T> extends ArrayList<RelationInfo> {
      */
     public boolean isMargeTarget() {
         return this.margeTarget;
+    }
+    
+    public boolean isMatchedVisibleType(int type){
+        return (type & this.getVisibleType()) > 0;
     }
 
 }
