@@ -356,6 +356,7 @@ public abstract class Table extends ArrayList<Column> {
 
                     newColumn.setTable(this);
                     this.add(newColumn);
+                    field.setAccessible(true);
                     field.set(this, newColumn);
 
                     Class ccls = newColumn.getClass();
@@ -1175,12 +1176,23 @@ public abstract class Table extends ArrayList<Column> {
     public String getColumnLogicalName(Column col) {
         String rvalue = null;
         try {
-            Field f = this.getClass()
-                    .getField(col.getJavaName());
-            LogicalName lname = f.getAnnotation(LogicalName.class);
-            rvalue = (lname == null) ? TableInfo.MESSAGE_LOGICALNAME_LOST : lname.
-                    value();
-        } catch (NoSuchFieldException | SecurityException ex) {
+            
+            Field[] fields = this.getClass().getFields();
+            for (Field field : fields) {
+                field.setAccessible(true);
+                if (field.getName().equals(col.getJavaName())) {
+                    Annotation anno = field.getAnnotation(LogicalName.class);
+                    if (anno != null) {
+                        rvalue = ((LogicalName) anno).value();
+                        break;
+                    }
+                }
+            }
+
+            if (rvalue == null) {
+                rvalue = TableInfo.MESSAGE_LOGICALNAME_LOST;
+            }
+        } catch (SecurityException ex) {
             Logger.getLogger(Table.class.getName())
                     .log(Level.SEVERE, null, ex);
         }
