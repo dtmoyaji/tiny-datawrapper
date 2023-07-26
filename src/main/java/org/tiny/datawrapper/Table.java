@@ -270,9 +270,9 @@ public abstract class Table extends ArrayList<Column> {
         String mypackage = Table.class.getPackage()
                 .getName();
 
-        Field[] fields = this.getClass()
-                .getFields();
+        Field[] fields = this.getClass().getFields();
         for (Field field : fields) {
+            
             String fieldTypeName = field.getType().getTypeName();
 
             boolean pass = false;
@@ -1020,6 +1020,7 @@ public abstract class Table extends ArrayList<Column> {
                         this.checkColumnAndUpdate(columns);
                     }
                 }
+                columns.close();
                 //クラスにあるがサーバーに無い
                 for (Column col : this) {
                     if (this.isAppendedColumn(col.getName())) {
@@ -1088,6 +1089,8 @@ public abstract class Table extends ArrayList<Column> {
         try {
             if (rs.next()) {
                 infId = tableInfo.TableInfoId.of(rs);
+            }
+            if(rs!=null){
                 rs.close();
             }
         } catch (SQLException ex) {
@@ -1176,7 +1179,7 @@ public abstract class Table extends ArrayList<Column> {
     public String getColumnLogicalName(Column col) {
         String rvalue = null;
         try {
-            
+
             Field[] fields = this.getClass().getFields();
             for (Field field : fields) {
                 field.setAccessible(true);
@@ -1448,6 +1451,7 @@ public abstract class Table extends ArrayList<Column> {
             if (rs.next()) {
                 rvalue = rs.getInt("reccount");
             }
+            
             rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(Table.class.getName())
@@ -1646,6 +1650,7 @@ public abstract class Table extends ArrayList<Column> {
                         aliasName = translate.TranslateData.of(rs);
                         translated = true;
                     }
+                    rs.close();
                 } catch (NullPointerException ex) {
                 } catch (SQLException ex) {
                     Logger.getLogger(Table.class.getName())
