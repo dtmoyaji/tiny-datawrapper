@@ -267,8 +267,8 @@ public class Column<T> extends ArrayList<RelationInfo> {
                     );
                 }
                 break;
-            case Jdbc.SERVER_TYPE_PGSQL:
             case Jdbc.SERVER_TYPE_H2DB: //H2dbはv2.0でPGSQLに文法を寄せてったので、まとめた
+            case Jdbc.SERVER_TYPE_PGSQL:
                 if (!this.name.contains("\"")) {
                     this.name = NameDescriptor.toSqlName(
                             this.getJavaName(),

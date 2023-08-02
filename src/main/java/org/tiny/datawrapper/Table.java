@@ -54,6 +54,11 @@ public abstract class Table extends ArrayList<Column> {
     public static final int JOIN_TYPE_INNER = 0;
     public static final int JOIN_TYPE_LEFT = 1;
     public static final int JOIN_TYPE_RIGHT = 2;
+    
+    public static final boolean ALLOW_DELETE_ROW = true;
+    public static final boolean DISALLOW_DELETE_ROW = false;
+    
+    private boolean allowDeleteRow = false;
 
     /**
      * テーブル名.
@@ -1747,6 +1752,14 @@ public abstract class Table extends ArrayList<Column> {
         }
 
         return rvalue;
+    }
+    
+    public void setAllowDeleteRow(boolean allow){
+        this.allowDeleteRow = allow;
+    }
+    
+    public boolean isAllowDeleteRow(){
+        return this.allowDeleteRow;
     }
 
 }
