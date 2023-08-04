@@ -131,7 +131,7 @@ public class Condition<T> {
                 this.value instanceof Time){
             value = "'" + this.value.toString() + "'";
         } else if (this.value instanceof Column) {
-            value = ((Column) this.value).getFullName();
+            value = ((Column<T>) this.value).getFullName();
         } else {
             value = String.valueOf(this.value);
         }

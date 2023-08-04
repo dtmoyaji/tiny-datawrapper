@@ -9,7 +9,7 @@ package org.tiny.datawrapper;
  *
  * @author bythe
  */
-public class ConditionForRegion extends Condition{
+public class ConditionForRegion<T> extends Condition<T>{
     
     public static final int LIMIT = 200;
     public static final int OFFSET = 201;

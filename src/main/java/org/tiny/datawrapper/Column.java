@@ -193,7 +193,7 @@ public class Column<T> extends ArrayList<RelationInfo> {
      */
     private boolean includeMd5 = true;
 
-    public <T> Column() {
+    public Column() {
 
     }
 
@@ -205,9 +205,9 @@ public class Column<T> extends ArrayList<RelationInfo> {
      *
      * @return 続けて設定できるように、コンディションを返す。
      */
-    public Condition setAlias(String text) {
+    public Condition<T> setAlias(String text) {
         this.alias = text;
-        return new Condition(this, Condition.SELECTABLE);
+        return new Condition<T>(this, Condition.SELECTABLE);
     }
 
     /**
@@ -233,7 +233,7 @@ public class Column<T> extends ArrayList<RelationInfo> {
      *
      * @return このカラム
      */
-    public Column removeAlias() {
+    public Column<T> removeAlias() {
         this.alias = "";
         return this;
     }
@@ -292,7 +292,8 @@ public class Column<T> extends ArrayList<RelationInfo> {
     }
 
     /**
-     * カラムを　TableName.ColumnName　の表記で取得する。 Select文を自動生成する際に内部的に使用されている。
+     * カラムを TableName.ColumnName の表記で取得する。
+     * Select文を自動生成する際に内部的に使用されている。
      *
      * @return カラム名
      */
@@ -432,7 +433,7 @@ public class Column<T> extends ArrayList<RelationInfo> {
         return value;
     }
 
-    public Column setValue(T value) {
+    public Column<T> setValue(T value) {
         if (value != null
                 && this.getType().equals(String.class.getSimpleName())) {
             String vvalue = (String) value;
@@ -528,7 +529,7 @@ public class Column<T> extends ArrayList<RelationInfo> {
      *
      * @return このカラム(続けて定義を記述するため.)
      */
-    public Column addRelationWith(Class<? extends Table> table) throws TinyDatabaseException {
+    public Column<T> addRelationWith(Class<? extends Table> table) throws TinyDatabaseException {
         return this.addRelationWith(table, this);
     }
 
@@ -541,7 +542,7 @@ public class Column<T> extends ArrayList<RelationInfo> {
      * @return このカラム(続けて定義を記述するため.)
      * @throws org.tiny.datawrapper.TinyDatabaseException 同一テーブル内のリレーションが宣言されたとき
      */
-    public Column addRelationWith(Class<? extends Table> table, Column column) throws TinyDatabaseException {
+    public Column<T> addRelationWith(Class<? extends Table> table, Column<T> column) throws TinyDatabaseException {
 
         this.relation = false;
 
@@ -583,88 +584,88 @@ public class Column<T> extends ArrayList<RelationInfo> {
         return this.relation;
     }
 
-    public Condition sameValueOf(String value) {
-        Condition rvalue = new Condition(this, Condition.EQUALS, value);
+    public Condition<T> sameValueOf(String value) {
+        Condition<T> rvalue = new Condition(this, Condition.EQUALS, value);
         return rvalue;
     }
 
-    public Condition sameValueOf(int value) {
-        Condition rvalue = new Condition(this, Condition.EQUALS, String.valueOf(
+    public Condition<T> sameValueOf(int value) {
+        Condition<T> rvalue = new Condition(this, Condition.EQUALS, String.valueOf(
                 value));
         return rvalue;
     }
 
-    public Condition sameValueOf(Column col) {
-        Condition rvalue = new Condition(this, Condition.EQUALS, col);
+    public Condition<T> sameValueOf(Column<T> col) {
+        Condition<T> rvalue = new Condition(this, Condition.EQUALS, col);
         return rvalue;
     }
 
-    public Condition differentValueOf(String value) {
-        Condition rvalue = new Condition(this, Condition.NOT_EQUALS, value);
+    public Condition<T> differentValueOf(String value) {
+        Condition<T> rvalue = new Condition(this, Condition.NOT_EQUALS, value);
         return rvalue;
     }
 
-    public Condition differentValueOf(Column col) {
-        Condition rvalue = new Condition(this, Condition.NOT_EQUALS, col);
+    public Condition<T> differentValueOf(Column<T> col) {
+        Condition<T> rvalue = new Condition(this, Condition.NOT_EQUALS, col);
         return rvalue;
     }
 
-    public Condition isNull() {
-        Condition rvalue = new Condition(this, Condition.IS_NULL);
+    public Condition<T> isNull() {
+        Condition<T> rvalue = new Condition(this, Condition.IS_NULL);
         return rvalue;
     }
 
-    public Condition isNotNull() {
-        Condition rvalue = new Condition(this, Condition.IS_NOT_NULL);
+    public Condition<T> isNotNull() {
+        Condition<T> rvalue = new Condition(this, Condition.IS_NOT_NULL);
         return rvalue;
     }
 
-    public Condition like(String value) {
-        Condition rvalue = new Condition(this, Condition.LIKE, value);
+    public Condition<T> like(String value) {
+        Condition<T> rvalue = new Condition(this, Condition.LIKE, value);
         return rvalue;
     }
 
-    public Condition greater(String value) {
-        Condition rvalue = new Condition(this, Condition.GREATER, value);
+    public Condition<T> greater(String value) {
+        Condition<T> rvalue = new Condition(this, Condition.GREATER, value);
         return rvalue;
     }
 
-    public Condition greater(Column col) {
-        Condition rvalue = new Condition(this, Condition.GREATER, col);
+    public Condition<T> greater(Column<T> col) {
+        Condition<T> rvalue = new Condition(this, Condition.GREATER, col);
         return rvalue;
     }
 
-    public Condition greaterEqual(String value) {
-        Condition rvalue = new Condition(this, Condition.GREATER_EQUAL, value);
+    public Condition<T> greaterEqual(String value) {
+        Condition<T> rvalue = new Condition(this, Condition.GREATER_EQUAL, value);
         return rvalue;
     }
 
-    public Condition greaterEqual(Column col) {
-        Condition rvalue = new Condition(this, Condition.GREATER_EQUAL, col);
+    public Condition<T> greaterEqual(Column<T> col) {
+        Condition<T> rvalue = new Condition(this, Condition.GREATER_EQUAL, col);
         return rvalue;
     }
 
-    public Condition lower(String value) {
-        Condition rvalue = new Condition(this, Condition.LOWER, value);
+    public Condition<T> lower(String value) {
+        Condition<T> rvalue = new Condition(this, Condition.LOWER, value);
         return rvalue;
     }
 
-    public Condition lower(Column col) {
-        Condition rvalue = new Condition(this, Condition.LOWER, col);
+    public Condition<T> lower(Column<T> col) {
+        Condition<T> rvalue = new Condition(this, Condition.LOWER, col);
         return rvalue;
     }
 
-    public Condition lowerEqual(String value) {
-        Condition rvalue = new Condition(this, Condition.LOWER_EQUAL, value);
+    public Condition<T> lowerEqual(String value) {
+        Condition<T> rvalue = new Condition(this, Condition.LOWER_EQUAL, value);
         return rvalue;
     }
 
-    public Condition lowerEqual(Column col) {
-        Condition rvalue = new Condition(this, Condition.LOWER_EQUAL, col);
+    public Condition<T> lowerEqual(Column<T> col) {
+        Condition<T> rvalue = new Condition(this, Condition.LOWER_EQUAL, col);
         return rvalue;
     }
 
-    public Column setAutoIncrement(boolean setting) {
+    public Column<T> setAutoIncrement(boolean setting) {
         this.autoIncrement = setting;
         return this;
     }
@@ -685,7 +686,7 @@ public class Column<T> extends ArrayList<RelationInfo> {
         return this.existValue;
     }
 
-    public Condition setSelectable(boolean selectable) {
+    public Condition<T> setSelectable(boolean selectable) {
         this.selectable = selectable;
         return new Condition(this, Condition.SELECTABLE);
     }
@@ -695,7 +696,7 @@ public class Column<T> extends ArrayList<RelationInfo> {
      *
      * @return
      */
-    public Condition asJoinBridge() {
+    public Condition<T> asJoinBridge() {
         return new Condition(this, Condition.RELATION_PATH);
     }
 
@@ -751,7 +752,7 @@ public class Column<T> extends ArrayList<RelationInfo> {
      *
      * @return this
      */
-    public Column setVisibleType(int type) {
+    public Column<T> setVisibleType(int type) {
         this.visibleType = type;
         return this;
     }
@@ -793,7 +794,7 @@ public class Column<T> extends ArrayList<RelationInfo> {
      *
      * @return
      */
-    public Column setInculdeMd5(boolean include) {
+    public Column<T> setInculdeMd5(boolean include) {
         this.includeMd5 = include;
         return this;
     }

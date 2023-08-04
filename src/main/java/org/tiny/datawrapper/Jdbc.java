@@ -1,26 +1,3 @@
-/*
- * The MIT License
- *
- * Copyright 2016 takahiro.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
 package org.tiny.datawrapper;
 
 import java.io.File;
@@ -35,6 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.tiny.datawrapper.entity.ColumnInfo;
@@ -43,10 +21,10 @@ import org.tiny.datawrapper.entity.TableInfo;
 /**
  * データの取得、登録、更新を行うクラス.
  *
- * @author Takahiro MURAKAMI
+ * @author dtmoyaji
  */
 @Controller("Jdbc")
-public class Jdbc implements Serializable, IJdbcSupplier, IDbSwitch {
+public class Jdbc implements Serializable, IDbSwitch {
 
     private static final String URL_BASE = "jdbc:h2:tcp:localhost:%s//%s";
 
@@ -59,12 +37,12 @@ public class Jdbc implements Serializable, IJdbcSupplier, IDbSwitch {
     public static final int SERVER_TYPE_PGSQL = 2;
 
     /**
-     * SQL実行結果の表示モード： 何もしない.
+     * SQL実行結果の表示モード: 何もしない.
      */
     public static final int LOGGING_MODE_SILENT = 0;
 
     /**
-     * SQL実行結果の表示モード： 構文と結果を標準出力.
+     * SQL実行結果の表示モード: 構文と結果を標準出力.
      */
     public static final int LOGGING_MODE_STDOUT = 1;
 
@@ -257,7 +235,7 @@ public class Jdbc implements Serializable, IJdbcSupplier, IDbSwitch {
     public Connection getConnection(String jdbcUrl, String user, String password) {
         Connection rvalue = null;
         try {
-            boolean tableinfoExist = false;
+            //boolean tableinfoExist = false;
             rvalue = DriverManager.getConnection(jdbcUrl, user, password);
 
             ResultSet existance = rvalue
