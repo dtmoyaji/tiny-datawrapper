@@ -766,14 +766,14 @@ public class Column<T> extends ArrayList<RelationInfo> {
         return this.visibleType;
     }
 
-    public ConditionForOrder asc() {
-        ConditionForOrder rvalue = new ConditionForOrder(this,
+    public ConditionForOrder<T> asc() {
+        ConditionForOrder<T> rvalue = new ConditionForOrder(this,
                 ConditionForOrder.ORDER_ASC);
         return rvalue;
     }
 
-    public ConditionForOrder desc() {
-        ConditionForOrder rvalue = new ConditionForOrder(this,
+    public ConditionForOrder<T> desc() {
+        ConditionForOrder<T> rvalue = new ConditionForOrder(this,
                 ConditionForOrder.ORDER_DESC);
         return rvalue;
     }
