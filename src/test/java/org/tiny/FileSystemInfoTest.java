@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.tiny;
 
 import org.tiny.datawrapper.FileSystemInfo;
@@ -21,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  *
- * @author Takahiro MURAKAMI
+ * @author dtmoyaji
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = MiniServer.class)
