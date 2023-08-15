@@ -440,10 +440,10 @@ public abstract class Table extends ArrayList<Column> {
         String where = "";
         for (Condition cnd : conditions) {
             if (!(cnd instanceof ConditionForOrder)) {
-                where += ", " + cnd.getWhere();
+                where += "and " + cnd.getWhere();
             }
         }
-        where = where.substring(1);
+        where = where.substring(3);
         cmd = String.format(cmd, this.getName(), where);
 
         if (this.getDebugMode()) {
