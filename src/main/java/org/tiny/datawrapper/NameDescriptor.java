@@ -3,7 +3,7 @@ package org.tiny.datawrapper;
 /**
  * Javaの命名規則とデータベースの命名規則を相互変換 するためのクラス。内部で利用するので、外部には出てこない と思います。
  *
- * @author Takahiro MURAKAMI
+ * @author dtmoyaji
  */
 public class NameDescriptor {
 

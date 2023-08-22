@@ -1,16 +1,10 @@
 package org.tiny.datawrapper;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import org.springframework.stereotype.Component;
 
 /**
  *
- * @author Takahiro MURAKAMI
+ * @author dtmoyaji
  */
 @Component
 public interface IDbSwitch extends IJdbcSupplier{

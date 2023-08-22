@@ -5,13 +5,12 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.xml.bind.DatatypeConverter;
 
 /**
  * 他のフィールドからMD5を生成して登録するためのカラム
  *
- * @author Takahiro MURAKAMI
+ * @author dtmoyaji
  */
 public class MD5Column extends Column<String> {
 

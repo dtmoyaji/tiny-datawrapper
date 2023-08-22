@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 /**
  * マージ文を作成する
  *
- * @author Takahiro MURAKAMI
+ * @author dtmoyaji
  */
 public class MergeDescriptor {
 

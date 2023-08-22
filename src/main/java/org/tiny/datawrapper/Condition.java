@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.tiny.datawrapper;
 
 import java.sql.Date;
@@ -13,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * 主にSQL発行時に使用する、カラムの状態を格納するクラス
  *
- * @author Takahiro MURAKAMI
+ * @author dtmoyaji
  * @param <T>
  */
 public class Condition<T> {
