@@ -1,10 +1,14 @@
 package org.tiny.datawrapper;
 
+import java.io.Serializable;
+
 /**
  * 並べ替え専用のCondition
  * @author dtmoyaji
  */
-public class ConditionForOrder<T> extends Condition<T> {
+public class ConditionForOrder<T> extends Condition<T> implements Serializable{
+
+    public static final long serialVersionUID = -1L;
 
     public static final int ORDER_ASC = 100;
 

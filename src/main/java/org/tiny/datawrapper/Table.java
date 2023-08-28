@@ -784,7 +784,6 @@ public abstract class Table extends ArrayList<Column> {
     /**
      * データを更新する。該当するレコードが存在しない場合は追加する。
      * <p>
-     * <p>
      * DBサーバーによってはmergeに対応していないものがあるので、 H2DB以外で使用する場合は、事前にサーバーの仕様を確認すること。
      * </p>
      *

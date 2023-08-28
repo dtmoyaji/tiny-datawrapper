@@ -1,5 +1,6 @@
 package org.tiny.datawrapper;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -11,7 +12,9 @@ import java.time.format.DateTimeFormatter;
  * @author dtmoyaji
  * @param <T>
  */
-public class Condition<T> {
+public class Condition<T> implements Serializable{
+
+    public static final long serialVersionUID = -1L;
 
     public static final int SELECTABLE = -1;
 
