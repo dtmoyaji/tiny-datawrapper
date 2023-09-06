@@ -418,6 +418,10 @@ public class Column<T> extends ArrayList<RelationInfo> {
     public String getType() {
         return this.typeName;
     }
+    
+    public void setType(String typeName){
+        this.typeName = typeName;
+    }
 
     /**
      * カラムの値を取得する。
@@ -718,8 +722,8 @@ public class Column<T> extends ArrayList<RelationInfo> {
             String pullname = this.getName().replace("\"", "").replace("`", "");
             String aliasName = this.getAlias().replace("\"", "").replace("`", "");
             for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-                if (rs.getMetaData().getColumnName(i).equals(pullname)
-                        || rs.getMetaData().getColumnName(i).equals(aliasName)) {
+                if (rs.getMetaData().getColumnName(i).equalsIgnoreCase(pullname)
+                        || rs.getMetaData().getColumnName(i).equalsIgnoreCase(aliasName)) {
                     colId = i;
                     break;
                 }

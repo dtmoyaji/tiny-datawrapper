@@ -31,10 +31,10 @@ public abstract class Table extends ArrayList<Column> {
     public static final int JOIN_TYPE_INNER = 0;
     public static final int JOIN_TYPE_LEFT = 1;
     public static final int JOIN_TYPE_RIGHT = 2;
-    
+
     public static final boolean ALLOW_DELETE_ROW = true;
     public static final boolean DISALLOW_DELETE_ROW = false;
-    
+
     private boolean allowDeleteRow = false;
 
     /**
@@ -254,7 +254,7 @@ public abstract class Table extends ArrayList<Column> {
 
         Field[] fields = this.getClass().getFields();
         for (Field field : fields) {
-            
+
             String fieldTypeName = field.getType().getTypeName();
 
             boolean pass = false;
@@ -775,7 +775,11 @@ public abstract class Table extends ArrayList<Column> {
 
         if (getJdbc() != null) {
             Jdbc jdbc = this.getJdbc();
-            rvalue = jdbc.isExistTable(this.getName());
+            rvalue = jdbc.isExistTable(
+                    NameDescriptor.getSplitedName(
+                            this.getName()
+                    )
+            );
         }
 
         return rvalue;
@@ -1057,7 +1061,7 @@ public abstract class Table extends ArrayList<Column> {
         columnInfo.setJdbc(supplier);
 
         //テーブル情報の記録.
-        String tablePhisicalName = this.getName();
+        String tablePhisicalName = NameDescriptor.getSplitedName(this.getName());
         String tableLogicalName = this.getLogicalName();
         String tableClassName = this.getClass()
                 .getCanonicalName();
@@ -1071,7 +1075,7 @@ public abstract class Table extends ArrayList<Column> {
             if (rs.next()) {
                 infId = tableInfo.TableInfoId.of(rs);
             }
-            if(rs!=null){
+            if (rs != null) {
                 rs.close();
             }
         } catch (SQLException ex) {
@@ -1432,7 +1436,7 @@ public abstract class Table extends ArrayList<Column> {
             if (rs.next()) {
                 rvalue = rs.getInt("reccount");
             }
-            
+
             rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(Table.class.getName())
@@ -1729,12 +1733,12 @@ public abstract class Table extends ArrayList<Column> {
 
         return rvalue;
     }
-    
-    public void setAllowDeleteRow(boolean allow){
+
+    public void setAllowDeleteRow(boolean allow) {
         this.allowDeleteRow = allow;
     }
-    
-    public boolean isAllowDeleteRow(){
+
+    public boolean isAllowDeleteRow() {
         return this.allowDeleteRow;
     }
 

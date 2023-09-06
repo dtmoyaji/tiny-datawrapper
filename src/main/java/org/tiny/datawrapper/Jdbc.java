@@ -12,7 +12,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.tiny.datawrapper.entity.ColumnInfo;
@@ -137,6 +136,8 @@ public class Jdbc implements Serializable, IDbSwitch {
             this.serverType = Jdbc.SERVER_TYPE_H2DB;
         } else if (this.getUrl().contains("jdbc:mysql")) {
             this.serverType = Jdbc.SERVER_TYPE_MYSQL;
+        } else if (this.getUrl().contains("jdbc:mariadb")) {
+            this.serverType = Jdbc.SERVER_TYPE_MYSQL;
         } else if (this.getUrl().contains("jdbc:postgresql")) {
             this.serverType = Jdbc.SERVER_TYPE_PGSQL;
         } else {
@@ -155,8 +156,10 @@ public class Jdbc implements Serializable, IDbSwitch {
                     path = path.substring(path.indexOf(":") + 2);
                 }
                 rvalue = String.format(Jdbc.URL_BASE, this.getPort(), path);
+
             } catch (IOException ex) {
-                Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Jdbc.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
         }
         return rvalue;
@@ -186,6 +189,7 @@ public class Jdbc implements Serializable, IDbSwitch {
             Connection con = this.getConnection();
             Statement stmt = con.createStatement();
             rvalue = stmt.executeQuery(cmd);
+
         } catch (SQLException ex) {
             Logger.getLogger(Jdbc.class
                     .getName()).log(Level.SEVERE, null, ex);
@@ -205,6 +209,7 @@ public class Jdbc implements Serializable, IDbSwitch {
         boolean rvalue = false;
         try (Statement stmt = this.getConnection().createStatement()) {
             rvalue = stmt.execute(cmd);
+
         } catch (SQLException ex) {
             Logger.getLogger(Jdbc.class
                     .getName()).log(Level.SEVERE, cmd, ex);
@@ -273,6 +278,7 @@ public class Jdbc implements Serializable, IDbSwitch {
                 this.tableEntryCache.add(tblName);
                 ColumnInfo columnInfo = new ColumnInfo();
                 columnInfo.alterOrCreateTable(this);
+
             }
 
         } catch (SQLException ex) {
@@ -315,6 +321,7 @@ public class Jdbc implements Serializable, IDbSwitch {
                 int count = tableInfo.getCount(tableInfo.TablePhisicalName.sameValueOf(name));
                 if (count > 0) {
                     rvalue = true;
+
                 }
             }
         } catch (SQLException | TinyDatabaseException ex) {
@@ -346,6 +353,7 @@ public class Jdbc implements Serializable, IDbSwitch {
         DatabaseMetaData rvalue = null;
         try {
             rvalue = this.getConnection().getMetaData();
+
         } catch (SQLException ex) {
             Logger.getLogger(Jdbc.class
                     .getName()).log(Level.SEVERE, null, ex);
@@ -386,6 +394,7 @@ public class Jdbc implements Serializable, IDbSwitch {
         this.driver = driver;
         try {
             Class.forName(this.driver);
+
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Jdbc.class
                     .getName()).log(Level.SEVERE, null, ex);
