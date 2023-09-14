@@ -43,8 +43,12 @@ public class RelationInfo implements Serializable {
         return false;
     }
 
-    public Class<? extends org.tiny.datawrapper.Table> getTable() {
+    public Class<? extends org.tiny.datawrapper.Table> getTableClass() {
         return this.Table;
+    }
+    
+    public Column getColumn(){
+        return this.Column;
     }
 
 }

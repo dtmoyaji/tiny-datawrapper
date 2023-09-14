@@ -101,7 +101,7 @@ public class SelectionDescriptor {
         String stackName = baseTable.getAlias();
         String tableNameStack = "<" + stackName + ">";
         for (Condition condition : conditions) {
-            if (! (condition instanceof ConditionForRegion)) {
+            if (!(condition instanceof ConditionForRegion)) {
                 Table t = condition.getColumn()
                         .getTable();
                 stackName = t.getAlias();
@@ -126,7 +126,7 @@ public class SelectionDescriptor {
         //テーブルが全部そろったとき
         if (res) {
 
-            // inner joinの追加
+            // joinの追加
             for (int i = 0; i < this.tableReference.length; i++) {
                 for (int j = 0; j < this.tableReference[i].length; j++) {
                     if (this.tableReference[i][j] > 0 && i != j) {
@@ -369,7 +369,7 @@ public class SelectionDescriptor {
                     for (int k = 0; k < col.size(); k++) {
                         String refName
                                 = NameDescriptor.toSqlName(
-                                        col.get(k).getTable().getSimpleName(),
+                                        col.get(k).getTableClass().getSimpleName(),
                                         this.getServerType()
                                 );
 
@@ -379,22 +379,18 @@ public class SelectionDescriptor {
                             if (i != l) {
 
                                 for (Table tbl : this.tables) {
-                                    //if (!tbl.isMatched()) {
                                     if (tbl.getName()
                                             .equals(refName)) {
                                         refName = tbl.getAlias();
                                         tbl.setMatched(true);
+                                        Column c = (Column) col;
+                                        joinPattern[i][l] = " and $" + refFrom
+                                                .getAlias() + "$." + c.getName() + " = $"
+                                                + refName + "$." + refFrom.getLinkedColumn(tbl, c).getName();
                                         break;
                                     }
-                                    //}
                                 }
 
-                                Column c = (Column) col;
-                                joinPattern[i][l] = " and $" + refFrom
-                                        .getAlias() + "$." + c
-                                                .getName()
-                                        + " = $"
-                                        + refName + "$." + c.getName();
                             }
                         }
                     }

@@ -94,6 +94,16 @@ public class Column<T> extends ArrayList<RelationInfo> {
      * 長いリッチテキスト
      */
     public static final int VISIBLE_TYPE_RICHTEXTAREA = 128;
+    
+    /**
+     * 外部参照されたときに、表示対象としないテーブル
+     */
+    public static final int NORMAL_RELATION = 0;
+    
+    /**
+     * 外部参照されたときに表示対象とするテーブル
+     */
+    public static final int TARGET_FOR_EXTERNAL_RELATION = 1;
 
 
     /**
@@ -182,6 +192,8 @@ public class Column<T> extends ArrayList<RelationInfo> {
      * RecordEditor 上のフィールド表示タイプ.
      */
     private int visibleType = Column.VISIBLE_TYPE_LABEL;
+    
+    private int relationType = Column.NORMAL_RELATION;
 
     /**
      * MD5フィールドの値計算に含めるかどうか
@@ -819,6 +831,14 @@ public class Column<T> extends ArrayList<RelationInfo> {
     
     public boolean isMatchedVisibleType(int type){
         return (type & this.getVisibleType()) > 0;
+    }
+    
+    public void setRelationType(int type){
+        this.relationType = type;
+    }
+    
+    public boolean isMatchedRelationType(int type){
+        return this.relationType == type;
     }
 
 }

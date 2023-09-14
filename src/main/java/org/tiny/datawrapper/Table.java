@@ -1,7 +1,9 @@
 package org.tiny.datawrapper;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -1165,6 +1167,7 @@ public abstract class Table extends ArrayList<Column> {
         String rvalue = null;
         try {
 
+            // テーブル内の探索
             Field[] fields = this.getClass().getFields();
             for (Field field : fields) {
                 field.setAccessible(true);
@@ -1173,6 +1176,27 @@ public abstract class Table extends ArrayList<Column> {
                     if (anno != null) {
                         rvalue = ((LogicalName) anno).value();
                         break;
+                    }
+                }
+            }
+
+            // リレーション先の探索
+            if (rvalue == null) {
+                for (Column mycol : this) {
+                    if (mycol.hasRelation()) {
+                        RelationInfo rinfo = (RelationInfo) mycol.get(0);
+                        Class extTableClass = rinfo.getTableClass();
+                        fields = extTableClass.getFields();
+                        for (Field field : fields) {
+                            field.setAccessible(true);
+                            if (field.getName().equals(col.getJavaName())) {
+                                Annotation anno = field.getAnnotation(LogicalName.class);
+                                if (anno != null) {
+                                    rvalue = ((LogicalName) anno).value();
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -1740,6 +1764,59 @@ public abstract class Table extends ArrayList<Column> {
 
     public boolean isAllowDeleteRow() {
         return this.allowDeleteRow;
+    }
+
+    @Override
+    public Table clone() {
+        Table clone = null;
+        try {
+            Class cls = this.getClass();
+            Constructor constructor = cls.getDeclaredConstructor();
+            constructor.setAccessible(true);
+            clone = (Table) constructor.newInstance();
+
+            clone.setAllowDeleteRow(this.isAllowDeleteRow());
+            clone.setDebugMode(this.getDebugMode());
+            clone.setJdbc(this.getJdbc());
+            for (Column srcCol : this) {
+                for (int i = 0; i < srcCol.size(); i++) {
+                    RelationInfo rinfo = (RelationInfo) srcCol.get(i);
+                    Class rtable = rinfo.getTableClass();
+                    Column rcolumn = rinfo.getColumn();
+                    if (rcolumn != null) {
+                        clone.get(srcCol.getName()).addRelationWith(rtable, rcolumn);
+                    } else {
+                        clone.get(srcCol.getName()).addRelationWith(rtable);
+                    }
+                }
+            }
+            //Logger.getLogger(this.getClass().getName()).log(Level.INFO, "{0} Cloned.", this.getName());
+        } catch (NoSuchMethodException
+                | SecurityException
+                | InstantiationException
+                | IllegalAccessException
+                | IllegalArgumentException
+                | InvocationTargetException
+                | TinyDatabaseException ex) {
+            Logger.getLogger(Table.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return clone;
+    }
+
+    public Column getLinkedColumn(Table table, Column defColumn) {
+        Column rvalue = defColumn;
+        for (Column myColumn : this) {
+            ArrayList<RelationInfo> myRelations = myColumn;
+            for (RelationInfo relinfo : myRelations) {
+                if (relinfo.getTableClass().getName().equals(table.getClass().getName())) {
+                    if (relinfo.getColumn() != null) {
+                        rvalue = relinfo.getColumn();
+                    }
+                    break;
+                }
+            }
+        }
+        return rvalue;
     }
 
 }
