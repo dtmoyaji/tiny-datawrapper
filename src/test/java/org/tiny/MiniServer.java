@@ -13,6 +13,7 @@ import org.tiny.datawrapper.Jdbc;
 import org.tiny.datawrapper.entity.ColumnInfo;
 import org.tiny.datawrapper.entity.JdbcInfo;
 import org.tiny.datawrapper.entity.TableInfo;
+import org.tiny.datawrapper.h2db.ServerSwitch;
 
 /**
  * 単体で起動するミニサーバー
@@ -41,8 +42,15 @@ public class MiniServer {
     @Qualifier("JDBC_INFO")
     private JdbcInfo jdbcInfo;
 
+    @Autowired
+    private ServerSwitch sswitch;
+
     @PostConstruct
     private void postConstruct() {
+        sswitch.setServerPorts(jdbc.getPort(), -1);
+        sswitch.setUrl(jdbc.getUrl());
+        sswitch.on();
+        System.out.println(this.jdbc.getUrl()); 
         tableInfo.alterOrCreateTable();
         columnInfo.alterOrCreateTable();
         jdbcInfo.alterOrCreateTable();
@@ -52,7 +60,16 @@ public class MiniServer {
         System.out.println("CONSTRUCTOR");
     }
 
+    public void onServer(){
+        this.sswitch.on();
+    }
+
+    public void offServer(){
+        this.sswitch.off();
+    }
+
     public static final void main(String[] args) {
         SpringApplication.run(MiniServer.class, args);
     }
+
 }

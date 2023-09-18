@@ -1,16 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.tiny;
+
+import static org.junit.Assert.*;
 
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.junit.After;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +28,7 @@ public class JdbcTest {
     Jdbc jdbc;
     
     @Autowired
-    MiniServer miniserver;
+    MiniServer miniServer;
 
     @Value("${tiny.db.driver:org.h2.Driver}")
     String driver;

@@ -13,7 +13,9 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.tiny.datawrapper.annotations.Comment;
 import org.tiny.datawrapper.annotations.LogicalName;
@@ -775,8 +777,8 @@ public abstract class Table extends ArrayList<Column> {
     public boolean isExist() {
         boolean rvalue = false;
 
-        if (getJdbc() != null) {
-            Jdbc jdbc = this.getJdbc();
+        Jdbc jdbc = this.getJdbc();
+        if (jdbc != null) {
             rvalue = jdbc.isExistTable(
                     NameDescriptor.getSplitedName(
                             this.getName()
