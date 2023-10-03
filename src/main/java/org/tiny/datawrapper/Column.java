@@ -8,6 +8,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -199,9 +200,23 @@ public class Column<T> extends ArrayList<RelationInfo> {
      * MD5フィールドの値計算に含めるかどうか
      */
     private boolean includeMd5 = true;
+    
+    private HashMap<String, String> attributes;
 
     public Column() {
-
+        this.attributes = new HashMap<>();
+    }
+    
+    
+    /**
+     * カラムに持たせる属性値リストを取得する。
+     * @return 
+     */
+    public HashMap<String, String> getAttributes(){
+        if(this.attributes==null){
+            this.attributes = new HashMap<>();
+        }
+        return this.attributes;
     }
 
     /**
