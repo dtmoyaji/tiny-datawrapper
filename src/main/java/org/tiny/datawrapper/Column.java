@@ -97,6 +97,16 @@ public class Column<T> extends ArrayList<RelationInfo> {
     public static final int VISIBLE_TYPE_RICHTEXTAREA = 128;
     
     /**
+     * 日付
+     */
+    public static final int VISIBLE_TYPE_DATE = 256;
+    
+    /**
+     * 日付時刻
+     */
+    public static final int VISIBLE_TYPE_DATETIME = 512;
+    
+    /**
      * 外部参照されたときに、表示対象としないテーブル
      */
     public static final int NORMAL_RELATION = 0;
