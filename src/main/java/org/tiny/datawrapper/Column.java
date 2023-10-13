@@ -95,27 +95,26 @@ public class Column<T> extends ArrayList<RelationInfo> {
      * 長いリッチテキスト
      */
     public static final int VISIBLE_TYPE_RICHTEXTAREA = 128;
-    
+
     /**
      * 日付
      */
     public static final int VISIBLE_TYPE_DATE = 256;
-    
+
     /**
      * 日付時刻
      */
     public static final int VISIBLE_TYPE_DATETIME = 512;
-    
+
     /**
      * 外部参照されたときに、表示対象としないテーブル
      */
     public static final int NORMAL_RELATION = 0;
-    
+
     /**
      * 外部参照されたときに表示対象とするテーブル
      */
     public static final int TARGET_FOR_EXTERNAL_RELATION = 1;
-
 
     /**
      * カラム名
@@ -203,27 +202,27 @@ public class Column<T> extends ArrayList<RelationInfo> {
      * RecordEditor 上のフィールド表示タイプ.
      */
     private int visibleType = Column.VISIBLE_TYPE_LABEL;
-    
+
     private int relationType = Column.NORMAL_RELATION;
 
     /**
      * MD5フィールドの値計算に含めるかどうか
      */
     private boolean includeMd5 = true;
-    
+
     private HashMap<String, String> attributes;
 
     public Column() {
         this.attributes = new HashMap<>();
     }
-    
-    
+
     /**
      * カラムに持たせる属性値リストを取得する。
-     * @return 
+     *
+     * @return
      */
-    public HashMap<String, String> getAttributes(){
-        if(this.attributes==null){
+    public HashMap<String, String> getAttributes() {
+        if (this.attributes == null) {
             this.attributes = new HashMap<>();
         }
         return this.attributes;
@@ -324,8 +323,7 @@ public class Column<T> extends ArrayList<RelationInfo> {
     }
 
     /**
-     * カラムを TableName.ColumnName の表記で取得する。
-     * Select文を自動生成する際に内部的に使用されている。
+     * カラムを TableName.ColumnName の表記で取得する。 Select文を自動生成する際に内部的に使用されている。
      *
      * @return カラム名
      */
@@ -455,8 +453,8 @@ public class Column<T> extends ArrayList<RelationInfo> {
     public String getType() {
         return this.typeName;
     }
-    
-    public void setType(String typeName){
+
+    public void setType(String typeName) {
         this.typeName = typeName;
     }
 
@@ -853,16 +851,16 @@ public class Column<T> extends ArrayList<RelationInfo> {
     public boolean isMargeTarget() {
         return this.margeTarget;
     }
-    
-    public boolean isMatchedVisibleType(int type){
+
+    public boolean isMatchedVisibleType(int type) {
         return (type & this.getVisibleType()) > 0;
     }
-    
-    public void setRelationType(int type){
+
+    public void setRelationType(int type) {
         this.relationType = type;
     }
-    
-    public boolean isMatchedRelationType(int type){
+
+    public boolean isMatchedRelationType(int type) {
         return this.relationType == type;
     }
 
