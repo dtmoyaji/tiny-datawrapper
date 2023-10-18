@@ -1444,10 +1444,8 @@ public abstract class Table extends ArrayList<Column> {
      *
      * @return レコード数
      */
-    public int getCount(Condition... conditions) throws TinyDatabaseException {
-        String cmdsrc = this.getSelectSentence(conditions);
-        String cmd = "select count(*) reccount from (%s) countsql";
-        cmd = String.format(cmd, cmdsrc);
+    public int getCount(Condition... conditions) {
+        String cmd = this.getCountSentence(conditions);
 
         if (this.getDebugMode()) {
             Logger.getLogger(this.getClass().getCanonicalName()).info(cmd);
@@ -1467,6 +1465,21 @@ public abstract class Table extends ArrayList<Column> {
                     .log(Level.SEVERE, null, ex);
         }
         return rvalue;
+    }
+
+    public String getCountSentence(Condition... conditions) {
+        String cmd = "";
+        try {
+            String cmdsrc = this.getSelectSentence(conditions);
+            cmd = "select count(*) reccount from (%s) countsql";
+            cmd = String.format(cmd, cmdsrc);
+        } catch (TinyDatabaseException ex) {
+            Logger.getLogger(Table.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(this.getDebugMode()){
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, cmd);
+        }
+        return cmd;
     }
 
     /**
