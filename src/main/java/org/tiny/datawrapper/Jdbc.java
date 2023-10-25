@@ -12,7 +12,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.tiny.datawrapper.entity.ColumnInfo;
@@ -325,7 +324,7 @@ public class Jdbc implements Serializable, IDbSwitch {
 
                 }
             }
-        } catch (SQLException | TinyDatabaseException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(Jdbc.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
